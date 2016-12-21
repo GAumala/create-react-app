@@ -267,15 +267,14 @@ function runDevServer(host, port, protocol) {
       ignored: /node_modules/
     },
     // Enable HTTPS if the HTTPS environment variable is set to 'true'
-    https: protocol === "https",
-    host: host
+    https: protocol === "https"
   });
 
   // Our custom middleware proxies requests to /index.html or a remote API.
   addMiddleware(devServer);
 
   // Launch WebpackDevServer.
-  devServer.listen(port, (err, result) => {
+  devServer.listen(port, host, (err, result) => {
     if (err) {
       return console.log(err);
     }
@@ -292,7 +291,7 @@ function runDevServer(host, port, protocol) {
 
 function run(port) {
   var protocol = process.env.HTTPS === 'true' ? "https" : "http";
-  var host = process.env.HOST || 'localhost';
+  var host = process.env.HOST || '0.0.0.0';
   setupCompiler(host, port, protocol);
   runDevServer(host, port, protocol);
 }
